@@ -1,0 +1,24 @@
+{
+  "name": "employeetracker",
+  "version": "1.0.0",
+  "description": "a command-line application that allows the user to add departments, roles, employees",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marykatewhite/EmployeeTracker.git"
+  },
+  "author": "Mary Kate White",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marykatewhite/EmployeeTracker/issues"
+  },
+  "homepage": "https://github.com/marykatewhite/EmployeeTracker#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^7.0.4",
+    "mysql": "^2.18.1"
+  }
+}
