@@ -1,0 +1,52 @@
+INSERT INTO department (name)
+VALUES ("Engineering");
+INSERT INTO department (name)
+VALUES ("Management");
+INSERT INTO department (name)
+VALUES ("Accounting");
+INSERT INTO department (name)
+VALUES ("Sales");
+
+
+
+INSERT INTO role (title, salary, department_id)
+VALUES ("Senior Engineer", "120000.00", 1);
+INSERT INTO role (title, salary, department_id)
+VALUES ("Junior Engineer", "70000.00", 1);
+INSERT INTO role (title, salary, department_id)
+VALUES ("Manager", "65000.00", 2);
+INSERT INTO role (title, salary, department_id)
+VALUES ("Assistant Manager", "49000.00", 2);
+INSERT INTO role (title, salary, department_id)
+VALUES ("Accountant", "85000.00", 3);
+INSERT INTO role (title, salary, department_id)
+VALUES ("Sales Rep", "55000.00", 4);
+INSERT INTO role (title, salary, department_id)
+VALUES ("Admin Assistant", "30000.00", 4);
+
+
+
+INSERT INTO employees (first_name, last_name, role_id, department_id)
+VALUES ("Mary", "White", "1");
+INSERT INTO employees (first_name, last_name, role_id, department_id)
+VALUES ("Zach", "White", "1", "1");
+INSERT INTO employees (first_name, last_name, role_id, department_id)
+VALUES ("Zach", "Sadovzky", "2", "1");
+INSERT INTO employees (first_name, last_name, role_id, department_id)
+VALUES ("Rosy", "Wagoner", "3");
+INSERT INTO employees (first_name, last_name, role_id, department_id)
+VALUES ("Kyle", "Almas", "4", "4");
+INSERT INTO employees (first_name, last_name, role_id, department_id)
+VALUES ("Lucy", "Plant", "5");
+INSERT INTO employees (first_name, last_name, role_id, department_id)
+VALUES ("Ringo", "Wagoner", "6", "6");
+INSERT INTO employees (first_name, last_name, role_id, department_id)
+VALUES ("Cody", "Bones", "6", "6");
+INSERT INTO employees (first_name, last_name, role_id, department_id)
+VALUES ("Tony", "Hinchcliff", "7", "7");
+INSERT INTO employees (first_name, last_name, role_id, department_id)
+VALUES ("Ariana", "Grande", "7", "8");
+
+
+
+
