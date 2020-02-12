@@ -1,21 +1,97 @@
 const mysql = require("mysql");
 const { prompt } = require("inquirer");
 const cTable = require("console.table");
-const dbChanges = require("./routes");
 
-const connection = mysql.createConnection({
-	host: "localhost",
-	user: "root",
-	password: "Fr33dum!",
-	database: "staffDB"
-});
+const connection = require("./connection");
+
+
+// formerly in the routes.js file which turned out to be a bridge too far
+function viewEmployees() {
+  return connection.query(
+    "SELECT * FROM employees", function(err, res) {
+      if (err) throw err;
+      console.table(res);
+    });
+};
+
+function newEmployee(employee) {
+  console.log(employee);
+  return connection.query("INSERT INTO employees SET ?", employee);
+}
+
+function viewRoles() {
+  return connection.query(
+    " SELECT role.id, role.title, department.name, role.salary FROM role LEFT JOIN department on role.department_id = department.id "
+  );
+}
+
+function newRole(role) {
+  return connection.query("INSERT INTO role SET ?", role);
+}
+
+function updateRole(role) {
+  return connection.query(" ", role);
+}
+
+function viewDepartments() {
+  return connection.query(" SELECT * FROM department ");
+}
+
+function addDepartment(department) {
+  return connection.query("INSERT INTO department SET ?", department);
+}
+
+// function roleList() {
+//   return new Promise((resolve, reject) => {
+//     connection.query("SELECT title FROM role", function(err, res) {
+//       if (err) throw err;
+//       resolve(res);
+//     });
+//   });
+// }
+// function findRoleID(roleName) {
+//   return new Promise((resolve, reject) => {
+//     connection.query("SELECT id FROM role WHERE title = ?", roleName, function(
+//       err,
+//       res
+//     ) {
+//       if (err) throw err;
+//       resolve(res);
+//     });
+//   });
+// }
+
+// function managersList() {
+//   return new Promise((resolve, reject) => {
+//     connection.query("SELECT id, last_name FROM employees", function(err, res) {
+//       if (err) throw err;
+//       resolve(managerID);
+//     });
+//   });
+// }
+
+// function findManagerID(managerName) {
+//   return new Promise((resolve, reject) => {
+//     connection.query(
+//       "SELECT id FROM employees WHERE last_name = ?",
+//       managerName,
+//       function(err, res) {
+//         if (err) throw err;
+//         resolve(res);
+//       }
+//     );
+//   });
+// }
+
+function quit() {
+  console.log("buhbye");
+  connection.end();
+}
+
 
 async function initHR() {
-	
-	connection.connect();
 
-
-  const { choice } = await prompt([
+  await prompt([
     {
       type: "list",
       name: "choice",
@@ -23,31 +99,31 @@ async function initHR() {
       choices: [
         {
           name: "View All Employees",
-          value: "ALL_EMPLOYEES"
+          value: "VIEWEMPLOYEES"
         },
         {
           name: "New Employee",
-          value: "NEW_EMPLOYEE"
+          value: "ADDEMPLOYEE"
         },
         {
           name: "Update Employee Role",
-          value: "UPDATE_ROLE"
+          value: "UPDATEROLE"
         },
         {
           name: "View All Roles",
-          value: "VIEW_ROLES"
+          value: "VIEWROLES"
         },
         {
           name: "Add Role",
-          value: "ADD_ROLE"
+          value: "ADDROLE"
         },
         {
           name: "View All Departments",
-          value: "VIEW_DEPARTMENTS"
+          value: "VIEWDEPARTMENTS"
         },
         {
           name: "Add Department",
-          value: "ADD_DEPARTMENT"
+          value: "ADDDEPARTMENT"
         },
         {
           name: "Quit",
@@ -55,69 +131,75 @@ async function initHR() {
         }
       ]
     }
-  ]);
-  switch (choice) {
-    case "ALL_EMPLOYEES":
+  ]).then(function(choice) {
+    console.log(choice);
+    switch (choice.choice) {
+    case "VIEWEMPLOYEES":
       return viewEmployees();
 
-    case "NEW_EMPLOYEE":
+    case "ADDEMPLOYEE":
       return newEmployee();
 
-    case "VIEW_ROLES":
-	  return viewRoles();
+    case "VIEWROLES":
+    return viewRoles();
 	  
-    case "NEW_ROLE":
-	  return newRole();
+    case "ADDROLE":
+    return newRole();
 	  
-    case "UPDATE_ROLE":
+    case "UPDATEROLE":
       return updateRole();
 
-    case "VIEW_DEPARTMENTS":
+    case "VIEWDEPARTMENTS":
       return viewDepartments();
 
-    case "NEW_DEPARTMENT":
-      return newDepartment();
+    case "ADDDEPARTMENT":
+      return addDepartment();
 
     default:
       return quit();
   }
+  });
 }
 
   async function newEmployee() {
-	const roles = dbChanges.roleList();
-	const roleChoices = roles.map(({id, title}) => ({
-		id: id,
-		title: title		
-	}));
-	console.log(roleChoices.title);
-	// const departmentChoices = departments.map(({ id, name }) => ({
-	// 	name: name,
-	// 	value: id
-	// }));
-// 	const employee = await prompt([
-// 		{
-// 			name: 'title',
-// 			message: 'First name: '
-// 		},
-// 		{
-// 			name: 'last name',
-// 			message: 'Last name: '
-// 		},
-// 		{
-// 			type: 'list',
-// 			name: 'role_title',
-// 			message: 'Role: ',
-// 			choices: roleChoices
-// 		},
-// 		{
-// 			type: 'list',
-// 			name: 'department_title',
-// 			message: 'Department: ',
-// 			choices: departmentChoices
-// 		}
-// 	]);
-// 	await dbChanges.newEmployee(employee);
-}
+	// const roles = await roleList();
+	// const managers = await managersList();
+	// const roleChoices = roles.map((roleitem) => roleitem.title);
+	// const managerChoices = managers.map((manageritem) => manageritem.last_name);
+
+	let employee = await prompt([
+		{
+			name: 'first_name',
+			message: 'First name: '
+		},
+		{
+			name: 'last_name',
+			message: 'Last name: '
+		},
+		{
+			name: 'role_id',
+			message: 'Role ID: '
+		},
+		{
+			name: 'manager_id',
+			message: 'Manager ID: '
+		}
+	]
+  )
+  .then(function(employee) {
+    console.log(employee);
+  return connection.query("INSERT INTO employees SET ?", employee);
+  })
+  initHR();
+  };
+
+	// translate role_title into a role_id via the role database
+	// let roleName = employee.role_id;
+	// let managerName = employee.manager_id
+	// findRoleID(roleName).then(console.log());
+
+	// //translate the manager last_name into a manager_id via the employee database
+	// findManagerID(managerName).then(console.log());
 
 
 initHR();
