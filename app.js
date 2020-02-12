@@ -11,34 +11,34 @@ function viewEmployees() {
     "SELECT * FROM employees", function(err, res) {
       if (err) throw err;
       console.table(res);
-    });
+    }).then(initHR());
 };
 
 function newEmployee(employee) {
   console.log(employee);
-  return connection.query("INSERT INTO employees SET ?", employee);
+  return connection.query("INSERT INTO employees SET ?", employee).then(initHR());
 }
 
 function viewRoles() {
   return connection.query(
     " SELECT role.id, role.title, department.name, role.salary FROM role LEFT JOIN department on role.department_id = department.id "
-  );
+  ).then(initHR());
 }
 
 function newRole(role) {
-  return connection.query("INSERT INTO role SET ?", role);
+  return connection.query("INSERT INTO role SET ?", role).then(initHR());
 }
 
 function updateRole(role) {
-  return connection.query(" ", role);
+  return connection.query(" ", role).then(initHR());
 }
 
 function viewDepartments() {
-  return connection.query(" SELECT * FROM department ");
+  return connection.query(" SELECT * FROM department ").then(initHR());
 }
 
 function addDepartment(department) {
-  return connection.query("INSERT INTO department SET ?", department);
+  return connection.query("INSERT INTO department SET ?", department).then(initHR());
 }
 
 // function roleList() {
@@ -90,7 +90,6 @@ function quit() {
 
 
 async function initHR() {
-
   await prompt([
     {
       type: "list",
@@ -135,28 +134,36 @@ async function initHR() {
     console.log(choice);
     switch (choice.choice) {
     case "VIEWEMPLOYEES":
-      return viewEmployees();
+      viewEmployees();
+      break;
 
     case "ADDEMPLOYEE":
-      return newEmployee();
+      newEmployee();
+      break;
 
     case "VIEWROLES":
-    return viewRoles();
+    viewRoles();
+    break;
 	  
     case "ADDROLE":
-    return newRole();
+    newRole();
+    break;
 	  
     case "UPDATEROLE":
-      return updateRole();
+      updateRole();
+      break;
 
     case "VIEWDEPARTMENTS":
-      return viewDepartments();
+      viewDepartments();
+      break;
 
     case "ADDDEPARTMENT":
-      return addDepartment();
+      addDepartment();
+      break;
 
     default:
-      return quit();
+      quit();
+      break;
   }
   });
 }
@@ -188,9 +195,9 @@ async function initHR() {
   )
   .then(function(employee) {
     console.log(employee);
-  return connection.query("INSERT INTO employees SET ?", employee);
+  return connection.query("INSERT INTO employees SET ?", employee).then(initHR());
   })
-  initHR();
+  
   };
 
 	// translate role_title into a role_id via the role database
