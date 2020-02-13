@@ -6,7 +6,7 @@ INSERT INTO department (name)
 VALUES ("Accounting");
 INSERT INTO department (name)
 VALUES ("Sales");
-SELECT name FROM department;
+SELECT * FROM department;
 
 
 INSERT INTO role (title, salary, department_id)
@@ -43,7 +43,7 @@ VALUES ("Ringo", "Wagoner", "6", "6");
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES ("Cody", "Bones", "6", "6");
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
-VALUES ("Tony", "Hinchcliff", "7", "7");
+VALUES ("Tony", "Hinchcliffe", "7", "7");
 INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES ("Ariana", "Grande", "7", "8");
 
