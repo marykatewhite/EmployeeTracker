@@ -93,9 +93,9 @@ async function addDepartment() {
       name: "name",
       message: "Department name: "
     }
-  ])(function(newdepartment) {
-  return connection.query(`INSERT INTO department SET ?`, newdepartment)
-.then(initHR());
+  ]).then(function(newdepartment) {
+  connection.query(`INSERT INTO department SET ?`, newdepartment)
+initHR();
 })
 }
 
