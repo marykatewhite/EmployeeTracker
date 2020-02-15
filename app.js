@@ -16,10 +16,9 @@ function viewEmployees() {
   initHR();
 }
 
-// view role table LEFT JOIN BROKEN
+// view role table DONE
 function viewRoles() {
   connection.query(
-    // ' SELECT role.id, role.title, role.salary, department.id FROM role LEFT JOIN department on role.department_id = department.id ',
     ' SELECT * from role ',
     function(err, res) {
       if (err) throw err;
@@ -29,12 +28,13 @@ function viewRoles() {
   initHR();
 }
 
-// add a new role to role table DEPARTMENT_ID NO WORK
+// add a new role to role table DONE
 async function newRole() {
- 	// const departmentChoices = department.map(({ id, name }) => ({
-	// 	name: name,
-	// 	value: id		
-  // }));
+  let department = await connection.query('SELECT id, name FROM department');   
+  const departmentChoices = department.map(({ id, name }) => ({
+		name: name,
+		value: id		
+  }));
   
   let addedrole = await prompt([
     {
@@ -46,10 +46,10 @@ async function newRole() {
       message: "Role salary: "
     },
     {
-      // type: "list",
+      type: "list",
       name: "department_id",
-      message: "Which department (1-4)?",
-      // choices: departmentChoices
+      message: "Which department: ",
+      choices: departmentChoices
     }
   ]).then(function(addedrole) {
     connection.query(`INSERT INTO role SET ?`, addedrole);
@@ -86,11 +86,17 @@ function viewDepartments() {
   initHR();
 }
 
-// add a new department to department table NEEDS PROMPTS
-async function addDepartment(department) {
-  return connection
-    .query(`INSERT INTO department SET ${department}`)
-    .then(initHR());
+// add a new department to department table DONE
+async function addDepartment() {
+  let newdepartment = await prompt([
+    {
+      name: "name",
+      message: "Department name: "
+    }
+  ])(function(newdepartment) {
+  return connection.query(`INSERT INTO department SET ?`, newdepartment)
+.then(initHR());
+})
 }
 
 // add a new employee to employees table DONE
